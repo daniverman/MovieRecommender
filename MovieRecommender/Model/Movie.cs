@@ -17,7 +17,6 @@ namespace MovieRecommender.Model
         private string poster;
         private string plot;
 
-        //
         public Movie(String movieId)
         {
             this.id = movieId;

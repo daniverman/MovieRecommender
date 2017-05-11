@@ -29,10 +29,13 @@ namespace MovieRecommender.Model
         {
             moviesDictionary = new Dictionary<string, Movie>();
             moviesToGrab = new ConcurrentQueue<Movie>();
-            //load the movie database
-            loadDatabase();
-            //load the movie details from the api
-            loadMoviesFromApi();
+            if (!File.Exists("movies.csv"))
+            {
+                //load the movie database
+                loadDatabase();
+                //load the movie details from the api
+                loadMoviesFromApi();
+            }
         }
 
         private void writeToCsvFile(Movie movie, bool first)
@@ -58,9 +61,13 @@ namespace MovieRecommender.Model
             while (i < moviesDictionary.Count)
             {
                 moviesToGrab.TryDequeue(out movie);
-                extractMovieDetails(movie);
-                writeToCsvFile(movie, false);
-                Console.WriteLine(i);
+                //8207
+                if (i > 8207)
+                {
+                    extractMovieDetails(movie);
+                    writeToCsvFile(movie, false);
+                    Console.WriteLine(i);
+                }
                 i++;
             }
         }
