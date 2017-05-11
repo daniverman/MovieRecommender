@@ -6,29 +6,36 @@ using System.Threading.Tasks;
 
 namespace MovieRecommender.Model
 {
-    internal class Movie
+    class Movie
     {
-        private String id;
-        private String movieTitle;
-        private List<String> genres;
-        private int year;
-        private String urlLink;
-        private double rating;
-        private string poster;
-        private string plot;
+        String id;
+        String movieTitle;
+        List<String> genres;
+        int year;
+        String urlLink;
+        double rating;
+        string poster;
+        string plot;
 
         public Movie(String movieId)
         {
             this.id = movieId;
         }
 
-        public string Id { get => id; set => id = value; }
+        
+	
+        public string Id {
 
-        public string MovieTitle
-        {
-            get => movieTitle; set
-            {
-                if (!value.Contains("("))
+            get{ return id;}
+            set{ id= value;}
+        }
+
+        public string MovieTitle{
+            get{
+                return movieTitle;
+            }
+            set{
+                 if (!value.Contains("("))
                 {
                     movieTitle = value;
                     return;
@@ -42,15 +49,14 @@ namespace MovieRecommender.Model
         {
             string yearStr = value.Substring(value.IndexOf('(') + 1, 4);
             int yearNum;
-            if (Int32.TryParse(yearStr, out yearNum))
-            {
+            if(Int32.TryParse(yearStr,out yearNum)){
                 //this is a valid year
                 year = yearNum;
             }
             else
             {
                 //there are more the one parenthesis
-                yearStr = value.Substring(value.IndexOf('(', value.Length - 6) + 1, 4);
+                yearStr = value.Substring(value.IndexOf('(', value.Length - 6)+1,4);
                 if (Int32.TryParse(yearStr, out yearNum))
                 {
                     //this is a valid year
@@ -61,15 +67,29 @@ namespace MovieRecommender.Model
 
         public List<string> Genres
         {
-            get => genres;
-            set => genres = value;
+            get{return genres;}
+            set { genres = value; }
         }
-
-        public int Year { get => year; set => year = value; }
-        public string UrlLink { get => urlLink; set => urlLink = value; }
-        public double Rating { get => rating; set => rating = value; }
-        public string Poster { get => poster; set => poster = value; }
-        public string Plot { get => plot; set => plot = value; }
+        public int Year {
+            get{ return year;}
+            set{ year = value;}
+        }
+        public string UrlLink { 
+            get{return urlLink;}
+            set{ urlLink = value;}
+        }
+        public double Rating {
+            get{return rating;}
+            set{rating = value;}
+        }
+        public string Poster {
+            get{return poster;}
+            set{poster = value;}
+        }
+        public string Plot {
+            get{return plot;}
+            set{plot = value;}
+        }
 
         public static List<string> splitToGenres(string genresLine)
         {
