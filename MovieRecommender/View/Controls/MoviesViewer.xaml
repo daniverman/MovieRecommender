@@ -17,10 +17,10 @@
             <ColumnDefinition Width="5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2">Movies List</TextBlock>
-        <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding VM_MoviesList}">
+        <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding VM_MoviesListSmall}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <controls:MovieListItem movie="{Binding VM_MoviesList}"></controls:MovieListItem>
+                    <controls:MovieListItem movie="{Binding VM_MoviesListSmall}"></controls:MovieListItem>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemsPanel>

@@ -32,7 +32,7 @@ namespace MovieRecommender.Model
             }
         }
 
-        private ObservableCollection<Movie> smallMovieList;
+        private ObservableCollection<Movie> smallMovieList = new ObservableCollection<Movie>();
 
         public ObservableCollection<Movie> MoviesListSmall
         {
@@ -71,9 +71,15 @@ namespace MovieRecommender.Model
 
         private void createMoviesListSmall(int numOfMovies)
         {
+            int i = 0;
             foreach (Movie movie in moviesList)
             {
-                
+                if (i > numOfMovies)
+                {
+                    break;
+                }
+                smallMovieList.Add(movie);
+                i++;
             }
         }
 
