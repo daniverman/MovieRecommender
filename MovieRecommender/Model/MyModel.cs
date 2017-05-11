@@ -20,13 +20,38 @@ namespace MovieRecommender.Model
 {
     public class MyModel : INotifyPropertyChanged
     {
-        private Dictionary<string,Dictionary<string,Movie>> movieByGenreFull = new Dictionary<string, Dictionary<string, Movie>>();
+        private List<string> genres;
+
+        public List<string> Genres
+        {
+            get { return genres; }
+            set { genres = value;
+                notifyPropertyChanged("Genres");
+            }
+        }
+
+
+        private Dictionary<string, Dictionary<string, Movie>> movieByGenreFull = new Dictionary<string, Dictionary<string, Movie>>();
 
         public Dictionary<string, Dictionary<string, Movie>> MovieByGenreFull
         {
             get { return movieByGenreFull; }
-            set { movieByGenreFull = value;
-                notifyPropertyChanged("NotifyProperyChanged");
+            set
+            {
+                movieByGenreFull = value;
+                notifyPropertyChanged("MovieByGenreFull");
+            }
+        }
+
+        private Dictionary<string, Dictionary<string, Movie>> movieByGenreSmall;
+
+        public Dictionary<string, Dictionary<string, Movie>> MovieByGenreSmall
+        {
+            get { return movieByGenreSmall; }
+            set
+            {
+                movieByGenreSmall = value;
+                notifyPropertyChanged("MovieByGenreSmall");
             }
         }
 
@@ -48,7 +73,9 @@ namespace MovieRecommender.Model
         public ObservableCollection<Movie> MoviesListSmall
         {
             get { return smallMovieList; }
-            set { smallMovieList = value;
+            set
+            {
+                smallMovieList = value;
                 notifyPropertyChanged("MoviesListSmall");
             }
         }
@@ -78,6 +105,24 @@ namespace MovieRecommender.Model
             }
             createMoviesListSmall(200);
             //Recommender rec = new Recommender(moviesDictionary);
+            createGenreMoviesDictionary();
+        }
+
+        private void createGenreMoviesDictionary()
+        {
+            foreach (Movie movie in moviesList)
+            {
+                foreach (string genre in movie.Genres)
+                {
+                    if (!movieByGenreFull.ContainsKey(genre))
+                    {
+                        movieByGenreFull[genre] = new Dictionary<string, Movie>();
+                        movieByGenreSmall[genre] = new Dictionary<string, Movie>();
+                    }
+                    movieByGenreFull[genre][movie.Id] = movie;
+                    movieByGenreSmall[genre][movie.Id] = movie;
+                }
+            }
         }
 
         private void createMoviesListSmall(int numOfMovies)
