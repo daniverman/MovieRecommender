@@ -20,7 +20,7 @@ namespace MovieRecommender.Model
 {
     public class MyModel : INotifyPropertyChanged
     {
-        private List<string> genres;
+        private List<string> genres = new List<string>();
 
         public List<string> Genres
         {
@@ -43,7 +43,7 @@ namespace MovieRecommender.Model
             }
         }
 
-        private Dictionary<string, Dictionary<string, Movie>> movieByGenreSmall;
+        private Dictionary<string, Dictionary<string, Movie>> movieByGenreSmall = new Dictionary<string, Dictionary<string, Movie>>();
 
         public Dictionary<string, Dictionary<string, Movie>> MovieByGenreSmall
         {
@@ -118,9 +118,13 @@ namespace MovieRecommender.Model
                     {
                         movieByGenreFull[genre] = new Dictionary<string, Movie>();
                         movieByGenreSmall[genre] = new Dictionary<string, Movie>();
+                        genres.Add(genre);
                     }
                     movieByGenreFull[genre][movie.Id] = movie;
-                    movieByGenreSmall[genre][movie.Id] = movie;
+                    if (movieByGenreSmall[genre].Count < 200)
+                    {
+                        movieByGenreSmall[genre][movie.Id] = movie;
+                    }
                 }
             }
         }
