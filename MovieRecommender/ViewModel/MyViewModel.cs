@@ -35,6 +35,16 @@ namespace MovieRecommender.ViewModel
             }
         }
 
+        private List<string> genres;
+
+        public List<string> VM_Genres
+        {
+            get { return model.Genres; }
+            set { genres = value;
+                notifyPropertyChanged("VM_Genres");
+            }
+        }
+
 
         public MyViewModel(MyModel model)
         {
