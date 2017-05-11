@@ -20,6 +20,7 @@ namespace MovieRecommender.Model
 {
     public class MyModel : INotifyPropertyChanged
     {
+        private static Random rand = new Random();
         private List<string> genres = new List<string>();
 
         public List<string> Genres
@@ -75,8 +76,9 @@ namespace MovieRecommender.Model
 
             foreach (Movie movie in selctedMovies)
             {
+                double rating = rand.Next(1, 5);
                 selctedMoviesDictionary.Add(movie.Id, movie);
-                selctedMoviesRatingDictionary.Add(movie.Id, 5);
+                selctedMoviesRatingDictionary.Add(movie.Id, rating);
             }
             User user = new User();
             user.UserId = 999;
@@ -191,15 +193,26 @@ namespace MovieRecommender.Model
 
         private void createMoviesListSmall(int numOfMovies)
         {
-            int i = 0;
-            foreach (Movie movie in moviesList)
+            List<Movie> normalList = new List<Movie>();
+
+            foreach (Movie m in moviesList)
             {
-                if (i > numOfMovies)
+                normalList.Add(m);
+            }
+            normalList.Sort((y, x) => x.Rating.CompareTo(y.Rating));
+            //
+            int i = 0;
+            foreach (Movie movie in normalList)
+            {
+                if (movie.Rating < 10)
                 {
-                    break;
+                    if (i > numOfMovies)
+                    {
+                        break;
+                    }
+                    smallMovieList.Add(movie);
+                    i++;
                 }
-                smallMovieList.Add(movie);
-                i++;
             }
         }
 
