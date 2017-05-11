@@ -1,6 +1,7 @@
 ﻿using MovieRecommender.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,17 @@ namespace MovieRecommender.ViewModel
     class MyViewModel : INotifyPropertyChanged
     {
         MyModel model;
+
+        private ObservableCollection<Movie> moviesList;
+
+        public ObservableCollection<Movie> VM_MoviesList
+        {
+            get { return model.MoviesList; }
+            set { moviesList = value;
+                notifyPropertyChanged("VM_MoviesList");
+            }
+        }
+
 
         public MyViewModel(MyModel model)
         {

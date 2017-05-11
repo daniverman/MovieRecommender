@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MovieRecommender"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="650" Width="1025">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="9*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center">My Movies</TextBlock>
-        <ListView Grid.Row="1" Name="lvMoviesList"></ListView>
+        <TextBlock FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center">Movies Recommender</TextBlock>
+        <TextBlock FontSize="18" Grid.Row="1" Foreground="#000" Margin="10">in order to start you have to pick at least 5 of your favourites movies</TextBlock>
     </Grid>
 </Window>
