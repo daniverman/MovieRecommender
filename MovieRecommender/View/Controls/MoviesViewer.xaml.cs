@@ -32,6 +32,7 @@ namespace MovieRecommender.View
             this.DataContext = vm;
             this.vm = vm;
             lvFav.ItemsSource = selctedMovies;
+            lvGenres.SelectedIndex = 1;
         }
 
         private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -54,6 +55,27 @@ namespace MovieRecommender.View
                 {
                     selctedMovies.Add(selctedMovie);
                 }
+            }
+        }
+
+        private void lvGenres_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //change the genre
+            string genre = lvGenres.SelectedItem.ToString();
+            lv.ItemsSource = vm.showGenre(genre);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //search for a movie
+            string movieToSearch = tbMovieName.Text;
+            if (movieToSearch.Length == 0)
+            {
+                return;
+            }
+            if (vm.searchMovie(movieToSearch))
+            {
+                lv.ItemsSource = vm.VM_Results;
             }
         }
     }

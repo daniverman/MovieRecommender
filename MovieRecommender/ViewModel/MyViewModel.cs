@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace MovieRecommender.ViewModel
 {
@@ -23,7 +24,7 @@ namespace MovieRecommender.ViewModel
             }
         }
 
-        private ObservableCollection<Movie> moviesListSmal;
+        private ObservableCollection<Movie> moviesListSmall;
 
         public ObservableCollection<Movie> VM_MoviesListSmall
         {
@@ -45,6 +46,15 @@ namespace MovieRecommender.ViewModel
             }
         }
 
+        private ObservableCollection<Movie> results;
+
+        public ObservableCollection<Movie> VM_Results
+        {
+            get { return model.Results; }
+            set { results = value;
+                notifyPropertyChanged("VM_Results");
+            }
+        }
 
         public MyViewModel(MyModel model)
         {
@@ -63,6 +73,16 @@ namespace MovieRecommender.ViewModel
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
+        }
+
+        public ObservableCollection<Movie> showGenre(string genre)
+        {
+            return model.showGenre(genre);
+        }
+
+        internal bool searchMovie(string movieToSearch)
+        {
+            return model.searchMovie(movieToSearch);
         }
     }
 }

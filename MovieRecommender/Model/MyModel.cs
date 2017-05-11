@@ -30,10 +30,9 @@ namespace MovieRecommender.Model
             }
         }
 
+        private Dictionary<string, ObservableCollection<Movie>> movieByGenreFull = new Dictionary<string, ObservableCollection<Movie>>();
 
-        private Dictionary<string, Dictionary<string, Movie>> movieByGenreFull = new Dictionary<string, Dictionary<string, Movie>>();
-
-        public Dictionary<string, Dictionary<string, Movie>> MovieByGenreFull
+        public Dictionary<string, ObservableCollection<Movie>> MovieByGenreFull
         {
             get { return movieByGenreFull; }
             set
@@ -43,9 +42,9 @@ namespace MovieRecommender.Model
             }
         }
 
-        private Dictionary<string, Dictionary<string, Movie>> movieByGenreSmall = new Dictionary<string, Dictionary<string, Movie>>();
+        private Dictionary<string, ObservableCollection<Movie>> movieByGenreSmall = new Dictionary<string, ObservableCollection<Movie>>();
 
-        public Dictionary<string, Dictionary<string, Movie>> MovieByGenreSmall
+        public Dictionary<string, ObservableCollection<Movie>> MovieByGenreSmall
         {
             get { return movieByGenreSmall; }
             set
@@ -67,6 +66,41 @@ namespace MovieRecommender.Model
                 notifyPropertyChanged("MoviesList");
             }
         }
+
+        public ObservableCollection<Movie> showGenre(string genre)
+        {
+            return movieByGenreSmall[genre];
+        }
+
+        internal bool searchMovie(string movieToSearch)
+        {
+            results.Clear();
+            bool exist = false;
+            foreach (Movie movie in moviesList)
+            {
+                if (movie.MovieTitle.ToLower().Contains(movieToSearch.ToLower()))
+                {
+                    results.Add(movie);
+                    exist = true;
+                }
+            }
+            if (exist)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private ObservableCollection<Movie> results = new ObservableCollection<Movie>();
+
+        public ObservableCollection<Movie> Results
+        {
+            get { return results; }
+            set { results = value;
+                notifyPropertyChanged("Results");
+            }
+        }
+
 
         private ObservableCollection<Movie> smallMovieList = new ObservableCollection<Movie>();
 
@@ -110,20 +144,23 @@ namespace MovieRecommender.Model
 
         private void createGenreMoviesDictionary()
         {
+            genres.Add("All");
+            movieByGenreFull["All"] = smallMovieList;
+            movieByGenreSmall["All"] = smallMovieList;
             foreach (Movie movie in moviesList)
             {
                 foreach (string genre in movie.Genres)
                 {
                     if (!movieByGenreFull.ContainsKey(genre))
                     {
-                        movieByGenreFull[genre] = new Dictionary<string, Movie>();
-                        movieByGenreSmall[genre] = new Dictionary<string, Movie>();
+                        movieByGenreFull[genre] = new ObservableCollection<Movie>();
+                        movieByGenreSmall[genre] = new ObservableCollection<Movie>();
                         genres.Add(genre);
                     }
-                    movieByGenreFull[genre][movie.Id] = movie;
+                    movieByGenreFull[genre].Add(movie);
                     if (movieByGenreSmall[genre].Count < 200)
                     {
-                        movieByGenreSmall[genre][movie.Id] = movie;
+                        movieByGenreSmall[genre].Add(movie);
                     }
                 }
             }
