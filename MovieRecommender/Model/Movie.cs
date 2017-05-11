@@ -6,28 +6,37 @@ using System.Threading.Tasks;
 
 namespace MovieRecommender.Model
 {
-    internal class Movie
+    class Movie
     {
-        private String id;
-        private String movieTitle;
-        private List<String> genres;
-        private int year;
-        private String urlLink;
-        private double rating;
-        private string poster;
-        private string plot;
+        String id;
+        String movieTitle;
+        List<String> genres;
+        int year;
+        String urlLink;
+        double rating;
+        string poster;
+        string plot;
 
-        //
         public Movie(String movieId)
         {
             this.id = movieId;
         }
 
-        public string Id { get => id; set => id = value; }
+
+
+        public string Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
 
         public string MovieTitle
         {
-            get => movieTitle; set
+            get
+            {
+                return movieTitle;
+            }
+            set
             {
                 if (!value.Contains("("))
                 {
@@ -62,15 +71,34 @@ namespace MovieRecommender.Model
 
         public List<string> Genres
         {
-            get => genres;
-            set => genres = value;
+            get { return genres; }
+            set { genres = value; }
         }
-
-        public int Year { get => year; set => year = value; }
-        public string UrlLink { get => urlLink; set => urlLink = value; }
-        public double Rating { get => rating; set => rating = value; }
-        public string Poster { get => poster; set => poster = value; }
-        public string Plot { get => plot; set => plot = value; }
+        public int Year
+        {
+            get { return year; }
+            set { year = value; }
+        }
+        public string UrlLink
+        {
+            get { return urlLink; }
+            set { urlLink = value; }
+        }
+        public double Rating
+        {
+            get { return rating; }
+            set { rating = value; }
+        }
+        public string Poster
+        {
+            get { return poster; }
+            set { poster = value; }
+        }
+        public string Plot
+        {
+            get { return plot; }
+            set { plot = value; }
+        }
 
         public static List<string> splitToGenres(string genresLine)
         {
