@@ -22,20 +22,23 @@ namespace MovieRecommender.Model
             this.id = movieId;
         }
 
-        
-	
-        public string Id {
 
-            get{ return id;}
-            set{ id= value;}
+
+        public string Id
+        {
+            get { return id; }
+            set { id = value; }
         }
 
-        public string MovieTitle{
-            get{
+        public string MovieTitle
+        {
+            get
+            {
                 return movieTitle;
             }
-            set{
-                 if (!value.Contains("("))
+            set
+            {
+                if (!value.Contains("("))
                 {
                     movieTitle = value;
                     return;
@@ -49,14 +52,15 @@ namespace MovieRecommender.Model
         {
             string yearStr = value.Substring(value.IndexOf('(') + 1, 4);
             int yearNum;
-            if(Int32.TryParse(yearStr,out yearNum)){
+            if (Int32.TryParse(yearStr, out yearNum))
+            {
                 //this is a valid year
                 year = yearNum;
             }
             else
             {
                 //there are more the one parenthesis
-                yearStr = value.Substring(value.IndexOf('(', value.Length - 6)+1,4);
+                yearStr = value.Substring(value.IndexOf('(', value.Length - 6) + 1, 4);
                 if (Int32.TryParse(yearStr, out yearNum))
                 {
                     //this is a valid year
@@ -67,28 +71,33 @@ namespace MovieRecommender.Model
 
         public List<string> Genres
         {
-            get{return genres;}
+            get { return genres; }
             set { genres = value; }
         }
-        public int Year {
-            get{ return year;}
-            set{ year = value;}
+        public int Year
+        {
+            get { return year; }
+            set { year = value; }
         }
-        public string UrlLink { 
-            get{return urlLink;}
-            set{ urlLink = value;}
+        public string UrlLink
+        {
+            get { return urlLink; }
+            set { urlLink = value; }
         }
-        public double Rating {
-            get{return rating;}
-            set{rating = value;}
+        public double Rating
+        {
+            get { return rating; }
+            set { rating = value; }
         }
-        public string Poster {
-            get{return poster;}
-            set{poster = value;}
+        public string Poster
+        {
+            get { return poster; }
+            set { poster = value; }
         }
-        public string Plot {
-            get{return plot;}
-            set{plot = value;}
+        public string Plot
+        {
+            get { return plot; }
+            set { plot = value; }
         }
 
         public static List<string> splitToGenres(string genresLine)
