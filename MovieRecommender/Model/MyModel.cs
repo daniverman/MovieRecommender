@@ -1,27 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using LumenWorks.Framework.IO.Csv;
-using HtmlAgilityPack;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using Newtonsoft.Json.Linq;
-using System.Threading;
 using System.Collections.Concurrent;
 
 namespace MovieRecommender.Model
 {
-    class MyModel : INotifyPropertyChanged
+    internal class MyModel : INotifyPropertyChanged
     {
-        static Dictionary<string, Movie> moviesDictionary; //key = movieId, value = movie object
-        const string IMDB_BASE_URL = "http://www.imdb.com/title/tt";
-        static ConcurrentQueue<Movie> moviesToGrab;
+        private static Dictionary<string, Movie> moviesDictionary; //key = movieId, value = movie object
+        private const string IMDB_BASE_URL = "http://www.imdb.com/title/tt";
+        private static ConcurrentQueue<Movie> moviesToGrab;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -44,7 +38,7 @@ namespace MovieRecommender.Model
             }
             else
             {
-                sb.AppendLine(String.Format("{0},{1},{2},{3},{4},{5}", movie.Id, "\"" + movie.MovieTitle + "\"", movie.Year, movie.Poster, movie.Rating, "\""+movie.Plot+"\"", movie.Genres));
+                sb.AppendLine(String.Format("{0},{1},{2},{3},{4},{5}", movie.Id, "\"" + movie.MovieTitle + "\"", movie.Year, movie.Poster, movie.Rating, "\"" + movie.Plot + "\"", movie.Genres));
             }
             string csvpath = "movies.csv";
             File.AppendAllText(csvpath, sb.ToString());
