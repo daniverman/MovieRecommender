@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MovieRecommender.Model
 {
-    class Movie
+    public class Movie
     {
         String id;
         String movieTitle;

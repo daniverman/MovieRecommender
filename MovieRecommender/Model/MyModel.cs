@@ -13,11 +13,36 @@ using System.ComponentModel;
 using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Collections.Concurrent;
+using CsvHelper;
+using System.Collections.ObjectModel;
 
 namespace MovieRecommender.Model
 {
-    internal class MyModel : INotifyPropertyChanged
+    public class MyModel : INotifyPropertyChanged
     {
+        private ObservableCollection<Movie> moviesList = new ObservableCollection<Movie>();
+
+        public ObservableCollection<Movie> MoviesList
+        {
+            get { return moviesList; }
+            set
+            {
+                moviesList = value;
+                notifyPropertyChanged("MoviesList");
+            }
+        }
+
+        private ObservableCollection<Movie> smallMovieList;
+
+        public ObservableCollection<Movie> MoviesListSmall
+        {
+            get { return smallMovieList; }
+            set { smallMovieList = value;
+                notifyPropertyChanged("MoviesListSmall");
+            }
+        }
+
+
         private static Dictionary<string, Movie> moviesDictionary; //key = movieId, value = movie object
         private const string IMDB_BASE_URL = "http://www.imdb.com/title/tt";
         private static ConcurrentQueue<Movie> moviesToGrab;
@@ -40,7 +65,16 @@ namespace MovieRecommender.Model
                 //read movies file
                 loadCompleteDatabase();
             }
-            Recommender rec = new Recommender(moviesDictionary);
+            createMoviesListSmall(200);
+            //Recommender rec = new Recommender(moviesDictionary);
+        }
+
+        private void createMoviesListSmall(int numOfMovies)
+        {
+            foreach (Movie movie in moviesList)
+            {
+                
+            }
         }
 
         private void loadMoviesFromApi()
@@ -51,13 +85,9 @@ namespace MovieRecommender.Model
             while (i < moviesDictionary.Count)
             {
                 moviesToGrab.TryDequeue(out movie);
-                //8207
-                if (i > 8207)
-                {
-                    extractMovieDetails(movie);
-                    writeToCsvFile(movie, false);
-                    Console.WriteLine(i);
-                }
+                extractMovieDetails(movie);
+                writeToCsvFile(movie, false);
+                Console.WriteLine(i);
                 i++;
             }
         }
@@ -68,7 +98,7 @@ namespace MovieRecommender.Model
             using (var fs = File.OpenRead(@"db/movies.csv"))
             using (var reader = new StreamReader(fs))
             {
-                using (var csvReader = new CsvReader(reader, true))
+                using (var csvReader = new LumenWorks.Framework.IO.Csv.CsvReader(reader, true))
                 {
                     while (csvReader.ReadNextRecord())
                     {
@@ -85,7 +115,7 @@ namespace MovieRecommender.Model
             using (var fs = File.OpenRead(@"db/links.csv"))
             using (var reader = new StreamReader(fs))
             {
-                using (var csvReader = new CsvReader(reader, true))
+                using (var csvReader = new LumenWorks.Framework.IO.Csv.CsvReader(reader, true))
                 {
                     while (csvReader.ReadNextRecord())
                     {
@@ -103,18 +133,33 @@ namespace MovieRecommender.Model
             using (var fs = File.OpenRead(@"movies.csv"))
             using (var reader = new StreamReader(fs))
             {
-                using (var csvReader = new CsvReader(reader, true))
+                using (var csvReader = new CsvHelper.CsvReader(reader))
                 {
-                    while (csvReader.ReadNextRecord())
+                    while (csvReader.Read())
                     {
                         //the first line is the headers line (movieID,Title,genres)
                         Movie movie = new Movie(csvReader[0]);
                         movie.MovieTitle = csvReader[1];
-                        movie.Year = Int32.Parse(csvReader[2]);
-                        movie.Poster = csvReader[3];
-                        movie.Rating = Double.Parse(csvReader[4]);
-                        movie.Plot = csvReader[5];
+                        movie.Year = csvReader.GetField<int>(2);
+                        movie.Poster = csvReader.GetField<string>(3);
+                        movie.Rating = csvReader.GetField<double>(4);
+                        movie.Plot = csvReader.GetField<string>(5);
                         moviesDictionary[csvReader[0]] = movie;
+                    }
+                }
+            }
+            using (var fs = File.OpenRead(@"db/movies.csv"))
+            using (var reader = new StreamReader(fs))
+            {
+                using (var csvReader = new CsvHelper.CsvReader(reader))
+                {
+                    while (csvReader.Read())
+                    {
+                        if (moviesDictionary.ContainsKey(csvReader[0]))
+                        {
+                            moviesDictionary[csvReader[0]].Genres = Movie.splitToGenres(csvReader[2]);
+                            moviesList.Add(moviesDictionary[csvReader[0]]);
+                        }
                     }
                 }
             }

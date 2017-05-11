@@ -1,4 +1,5 @@
 ﻿using MovieRecommender.Model;
+using MovieRecommender.View;
 using MovieRecommender.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,18 @@ namespace MovieRecommender
             InitializeComponent();
             vm = new MyViewModel(new MyModel());
             this.DataContext = vm;
+        }
+
+        /// <summary>
+        /// open moviesViewer panel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainGrid.Children.Clear();
+            MoviesViewer mv = new MoviesViewer(vm);
+            mainGrid.Children.Add(mv);
         }
     }
 }
