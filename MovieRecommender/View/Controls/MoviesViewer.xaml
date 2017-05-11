@@ -53,9 +53,14 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel>
-                <TextBlock FontWeight="Bold" HorizontalAlignment="Center">Search genre</TextBlock>
-            </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock FontWeight="Bold" HorizontalAlignment="Center" Margin="5">Search genre</TextBlock>
+                <ListView Name="lvGenres" ItemsSource="{Binding VM_Genres}" Grid.Row="1"></ListView>
+            </Grid>
             <StackPanel Grid.Row="1">
                 <TextBlock FontWeight="Bold" HorizontalAlignment="Center">My favourite movies</TextBlock>
                 <ListView Name="lvFav"></ListView>
