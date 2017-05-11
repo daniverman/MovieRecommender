@@ -27,5 +27,17 @@ namespace MovieRecommender.Model
         {
             m_userMovies = new Dictionary<string, double>();
         }
+
+        public List<string> getTopTenMovies()
+        {
+            List<string> ans = new List<string>();
+            var sortedDict = from entry in m_userMovies orderby entry.Value descending select entry;
+            for (int i = 0; i < 10; i++)
+            {
+                string MovieId = sortedDict.ElementAt(i).Key;
+                ans.Add(MovieId);
+            }
+            return ans;
+        }
     }
 }
