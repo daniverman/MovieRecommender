@@ -54,7 +54,7 @@ namespace MovieRecommender.Model
         /// 
         /// </summary>
         private void loadMoviesFromApi()
-        {1
+        {
             writeToCsvFile(null, true);
             int i = 0;
             Movie movie;
