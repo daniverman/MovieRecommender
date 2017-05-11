@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MovieRecommender"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="1025">
+        Title="MainWindow" Height="650" Width="1025" ResizeMode="NoResize">
     <Grid Name="mainGrid">
         <Grid Name="openingPanel">
             <Grid.RowDefinitions>
