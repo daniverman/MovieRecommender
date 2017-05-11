@@ -50,6 +50,9 @@ namespace MovieRecommender.Model
             File.AppendAllText(csvpath, sb.ToString());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void loadMoviesFromApi()
         {
             writeToCsvFile(null, true);
