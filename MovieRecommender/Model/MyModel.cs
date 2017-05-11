@@ -29,10 +29,13 @@ namespace MovieRecommender.Model
         {
             moviesDictionary = new Dictionary<string, Movie>();
             moviesToGrab = new ConcurrentQueue<Movie>();
-            //load the movie database
-            loadDatabase();
-            //load the movie details from the api
-            loadMoviesFromApi();
+            if (!File.Exists("movies.csv"))
+            {
+                //load the movie database
+                loadDatabase();
+                //load the movie details from the api
+                loadMoviesFromApi();
+            }
         }
 
         private void writeToCsvFile(Movie movie, bool first)
@@ -40,19 +43,16 @@ namespace MovieRecommender.Model
             StringBuilder sb = new StringBuilder();
             if (first)
             {
-                sb.AppendLine("Id,Title,Year,Poster,Rating,Plot,Genres");
+                sb.AppendLine("Id,Title,Year,Poster,Rating,Plot");
             }
             else
             {
-                sb.AppendLine(String.Format("{0},{1},{2},{3},{4},{5},{6}", movie.Id, "\"" + movie.MovieTitle + "\"", movie.Year, movie.Poster, movie.Rating, "\""+movie.Plot+"\"", movie.Genres));
+                sb.AppendLine(String.Format("{0},{1},{2},{3},{4},{5}", movie.Id, "\"" + movie.MovieTitle + "\"", movie.Year, movie.Poster, movie.Rating, "\""+movie.Plot+"\"", movie.Genres));
             }
             string csvpath = "movies.csv";
             File.AppendAllText(csvpath, sb.ToString());
         }
 
-        /// <summary>
-        ///  jkj
-        /// </summary>
         private void loadMoviesFromApi()
         {
             writeToCsvFile(null, true);
@@ -61,9 +61,13 @@ namespace MovieRecommender.Model
             while (i < moviesDictionary.Count)
             {
                 moviesToGrab.TryDequeue(out movie);
-                extractMovieDetails(movie);
-                writeToCsvFile(movie, false);
-                Console.WriteLine(i);
+                //8207
+                if (i > 8207)
+                {
+                    extractMovieDetails(movie);
+                    writeToCsvFile(movie, false);
+                    Console.WriteLine(i);
+                }
                 i++;
             }
         }
