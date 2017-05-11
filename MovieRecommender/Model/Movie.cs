@@ -8,21 +8,19 @@ namespace MovieRecommender.Model
 {
     public class Movie
     {
-        String id;
-        String movieTitle;
-        List<String> genres;
-        int year;
-        String urlLink;
-        double rating;
-        string poster;
-        string plot;
+        private String id;
+        private String movieTitle;
+        private List<String> genres;
+        private int year;
+        private String urlLink;
+        private double rating;
+        private string poster;
+        private string plot;
 
         public Movie(String movieId)
         {
             this.id = movieId;
         }
-
-
 
         public string Id
         {
@@ -74,26 +72,31 @@ namespace MovieRecommender.Model
             get { return genres; }
             set { genres = value; }
         }
+
         public int Year
         {
             get { return year; }
             set { year = value; }
         }
+
         public string UrlLink
         {
             get { return urlLink; }
             set { urlLink = value; }
         }
+
         public double Rating
         {
             get { return rating; }
             set { rating = value; }
         }
+
         public string Poster
         {
             get { return poster; }
             set { poster = value; }
         }
+
         public string Plot
         {
             get { return plot; }
@@ -113,7 +116,7 @@ namespace MovieRecommender.Model
 
         public override string ToString()
         {
-            return "Id: " + id + ", " + movieTitle + " - ";
+            return movieTitle + " (" + year + ")";
         }
 
         internal static double extractRating(dynamic value)

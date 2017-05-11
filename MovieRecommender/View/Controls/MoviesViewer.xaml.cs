@@ -2,6 +2,7 @@
 using MovieRecommender.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,13 +24,14 @@ namespace MovieRecommender.View
     public partial class MoviesViewer : UserControl
     {
         private MyViewModel vm;
-        private List<Movie> selctedMovies = new List<Movie>();
+        private ObservableCollection<Movie> selctedMovies = new ObservableCollection<Movie>();
 
         public MoviesViewer(MyViewModel vm)
         {
             InitializeComponent();
             this.DataContext = vm;
             this.vm = vm;
+            lvFav.ItemsSource = selctedMovies;
         }
 
         private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -38,7 +40,20 @@ namespace MovieRecommender.View
             if (m != null)
             {
                 Movie selctedMovie = m as Movie;
-                selctedMovies.Add(selctedMovie);
+
+                bool isContains = false;
+                foreach (Movie selctedM in selctedMovies)
+                {
+                    if (selctedM.Id == selctedMovie.Id)
+                    {
+                        isContains = true;
+                    }
+                }
+
+                if (!isContains)
+                {
+                    selctedMovies.Add(selctedMovie);
+                }
             }
         }
     }
