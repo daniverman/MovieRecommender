@@ -1,4 +1,5 @@
-﻿using MovieRecommender.ViewModel;
+﻿using MovieRecommender.Model;
+using MovieRecommender.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,24 @@ namespace MovieRecommender.View
     /// </summary>
     public partial class MoviesViewer : UserControl
     {
-        MyViewModel vm;
+        private MyViewModel vm;
+        private List<Movie> selctedMovies = new List<Movie>();
 
         public MoviesViewer(MyViewModel vm)
         {
             InitializeComponent();
             this.DataContext = vm;
             this.vm = vm;
+        }
+
+        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            object m = lv.SelectedItem;
+            if (m != null)
+            {
+                Movie selctedMovie = m as Movie;
+                selctedMovies.Add(selctedMovie);
+            }
         }
     }
 }
