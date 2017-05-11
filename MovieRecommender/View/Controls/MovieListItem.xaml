@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="40">
     <Grid>
-        <Image Source="{Binding Poster}"></Image>  
+        <Image Source="{Binding Poster}">
+            <Image.ToolTip>
+                <ToolTip Content="{Binding MovieTitle}"/>
+            </Image.ToolTip>
+        </Image>  
     </Grid>
 </UserControl>

@@ -20,6 +20,17 @@ namespace MovieRecommender.Model
 {
     public class MyModel : INotifyPropertyChanged
     {
+        private Dictionary<string,Dictionary<string,Movie>> movieByGenreFull = new Dictionary<string, Dictionary<string, Movie>>();
+
+        public Dictionary<string, Dictionary<string, Movie>> MovieByGenreFull
+        {
+            get { return movieByGenreFull; }
+            set { movieByGenreFull = value;
+                notifyPropertyChanged("NotifyProperyChanged");
+            }
+        }
+
+
         private ObservableCollection<Movie> moviesList = new ObservableCollection<Movie>();
 
         public ObservableCollection<Movie> MoviesList
