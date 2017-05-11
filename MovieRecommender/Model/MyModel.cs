@@ -18,7 +18,7 @@ using System.Collections.ObjectModel;
 
 namespace MovieRecommender.Model
 {
-    internal class MyModel : INotifyPropertyChanged
+    public class MyModel : INotifyPropertyChanged
     {
         private ObservableCollection<Movie> moviesList = new ObservableCollection<Movie>();
 
@@ -31,6 +31,17 @@ namespace MovieRecommender.Model
                 notifyPropertyChanged("MoviesList");
             }
         }
+
+        private ObservableCollection<Movie> smallMovieList;
+
+        public ObservableCollection<Movie> MoviesListSmall
+        {
+            get { return smallMovieList; }
+            set { smallMovieList = value;
+                notifyPropertyChanged("MoviesListSmall");
+            }
+        }
+
 
         private static Dictionary<string, Movie> moviesDictionary; //key = movieId, value = movie object
         private const string IMDB_BASE_URL = "http://www.imdb.com/title/tt";
@@ -54,7 +65,16 @@ namespace MovieRecommender.Model
                 //read movies file
                 loadCompleteDatabase();
             }
+            createMoviesListSmall(200);
             //Recommender rec = new Recommender(moviesDictionary);
+        }
+
+        private void createMoviesListSmall(int numOfMovies)
+        {
+            foreach (Movie movie in moviesList)
+            {
+                
+            }
         }
 
         private void loadMoviesFromApi()

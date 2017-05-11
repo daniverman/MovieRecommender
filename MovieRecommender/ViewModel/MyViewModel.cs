@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MovieRecommender.ViewModel
 {
-    class MyViewModel : INotifyPropertyChanged
+    public class MyViewModel : INotifyPropertyChanged
     {
         MyModel model;
 
@@ -19,6 +19,18 @@ namespace MovieRecommender.ViewModel
         {
             get { return model.MoviesList; }
             set { moviesList = value;
+                notifyPropertyChanged("VM_MoviesList");
+            }
+        }
+
+        private ObservableCollection<Movie> moviesListSmal;
+
+        public ObservableCollection<Movie> VM_MoviesListSmall
+        {
+            get { return model.MoviesListSmall; }
+            set
+            {
+                moviesList = value;
                 notifyPropertyChanged("VM_MoviesList");
             }
         }

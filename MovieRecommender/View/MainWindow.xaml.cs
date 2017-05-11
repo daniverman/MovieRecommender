@@ -1,4 +1,5 @@
 ﻿using MovieRecommender.Model;
+using MovieRecommender.View;
 using MovieRecommender.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,9 @@ namespace MovieRecommender
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            mainGrid.Children.Clear();
+            MoviesViewer mv = new MoviesViewer(vm);
+            mainGrid.Children.Add(mv);
         }
     }
 }

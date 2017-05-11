@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MovieRecommender.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace MovieRecommender.View
     /// </summary>
     public partial class MoviesViewer : UserControl
     {
-        public MoviesViewer()
+        MyViewModel vm;
+
+        public MoviesViewer(MyViewModel vm)
         {
             InitializeComponent();
+            this.DataContext = vm;
+            this.vm = vm;
         }
     }
 }
