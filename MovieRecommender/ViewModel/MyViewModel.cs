@@ -11,14 +11,16 @@ namespace MovieRecommender.ViewModel
 {
     public class MyViewModel : INotifyPropertyChanged
     {
-        MyModel model;
+        private MyModel model;
 
         private ObservableCollection<Movie> moviesList;
 
         public ObservableCollection<Movie> VM_MoviesList
         {
             get { return model.MoviesList; }
-            set { moviesList = value;
+            set
+            {
+                moviesList = value;
                 notifyPropertyChanged("VM_MoviesList");
             }
         }
@@ -40,11 +42,12 @@ namespace MovieRecommender.ViewModel
         public List<string> VM_Genres
         {
             get { return model.Genres; }
-            set { genres = value;
+            set
+            {
+                genres = value;
                 notifyPropertyChanged("VM_Genres");
             }
         }
-
 
         public MyViewModel(MyModel model)
         {
@@ -63,6 +66,11 @@ namespace MovieRecommender.ViewModel
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
+        }
+
+        internal List<Movie> GetSuggested(ObservableCollection<Movie> selctedMovies)
+        {
+            return model.GetSuggested(selctedMovies);
         }
     }
 }
