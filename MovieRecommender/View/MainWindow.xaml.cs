@@ -30,5 +30,15 @@ namespace MovieRecommender
             vm = new MyViewModel(new MyModel());
             this.DataContext = vm;
         }
+
+        /// <summary>
+        /// open moviesViewer panel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

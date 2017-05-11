@@ -15,5 +15,8 @@
         </Grid.RowDefinitions>
         <TextBlock FontSize="22" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center">Movies Recommender</TextBlock>
         <TextBlock FontSize="18" Grid.Row="1" Foreground="#000" Margin="10">in order to start you have to pick at least 5 of your favourites movies</TextBlock>
+        <StackPanel Grid.Row="2">
+            <Button HorizontalAlignment="Center" Padding="10" Margin="10" Click="Button_Click">Pick your favourite movies</Button>
+        </StackPanel>
     </Grid>
 </Window>
