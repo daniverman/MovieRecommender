@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LumenWorks.Framework.IO.Csv;
-using HtmlAgilityPack;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net;
@@ -14,26 +13,14 @@ using System.ComponentModel;
 using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Collections.Concurrent;
-using CsvHelper;
-using System.Collections.ObjectModel;
 
 namespace MovieRecommender.Model
 {
-    class MyModel : INotifyPropertyChanged
+    internal class MyModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Movie> moviesList = new ObservableCollection<Movie>();
-
-        public ObservableCollection<Movie> MoviesList
-        {
-            get { return moviesList; }
-            set { moviesList = value;
-                notifyPropertyChanged("MoviesList");
-                    }
-        }
-
-        static Dictionary<string, Movie> moviesDictionary; //key = movieId, value = movie object
-        const string IMDB_BASE_URL = "http://www.imdb.com/title/tt";
-        static ConcurrentQueue<Movie> moviesToGrab;
+        private static Dictionary<string, Movie> moviesDictionary; //key = movieId, value = movie object
+        private const string IMDB_BASE_URL = "http://www.imdb.com/title/tt";
+        private static ConcurrentQueue<Movie> moviesToGrab;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -53,6 +40,62 @@ namespace MovieRecommender.Model
                 //read movies file
                 loadCompleteDatabase();
             }
+            Recommender rec = new Recommender(moviesDictionary);
+        }
+
+        private void loadMoviesFromApi()
+        {
+            writeToCsvFile(null, true);
+            int i = 0;
+            Movie movie;
+            while (i < moviesDictionary.Count)
+            {
+                moviesToGrab.TryDequeue(out movie);
+                //8207
+                if (i > 8207)
+                {
+                    extractMovieDetails(movie);
+                    writeToCsvFile(movie, false);
+                    Console.WriteLine(i);
+                }
+                i++;
+            }
+        }
+
+        private void loadDatabase()
+        {
+            //read movies.csv
+            using (var fs = File.OpenRead(@"db/movies.csv"))
+            using (var reader = new StreamReader(fs))
+            {
+                using (var csvReader = new CsvReader(reader, true))
+                {
+                    while (csvReader.ReadNextRecord())
+                    {
+                        //the first line is the headers line (movieID,Title,genres)
+                        Movie movie = new Movie(csvReader[0]);
+                        movie.MovieTitle = csvReader[1];
+                        movie.Genres = Movie.splitToGenres(csvReader[2]);
+                        moviesDictionary[csvReader[0]] = movie;
+                        moviesToGrab.Enqueue(movie);
+                    }
+                }
+            }
+
+            using (var fs = File.OpenRead(@"db/links.csv"))
+            using (var reader = new StreamReader(fs))
+            {
+                using (var csvReader = new CsvReader(reader, true))
+                {
+                    while (csvReader.ReadNextRecord())
+                    {
+                        if (moviesDictionary.ContainsKey(csvReader[0]))
+                        {
+                            moviesDictionary[csvReader[0]].UrlLink = "tt" + csvReader[1]; //add the IMDB link
+                        }
+                    }
+                }
+            }
         }
 
         private void loadCompleteDatabase()
@@ -60,45 +103,18 @@ namespace MovieRecommender.Model
             using (var fs = File.OpenRead(@"movies.csv"))
             using (var reader = new StreamReader(fs))
             {
-                using (var csvReader = new CsvHelper.CsvReader(reader))
-                {
-                    while (csvReader.Read())
-                    {
-                        if (csvReader.GetField<string>(0) == "\u001a")
-                        {
-                            break; // End of file
-                        }
-                        //the first line is the headers line (movieID,Title,genres)
-                        Movie movie = new Movie(csvReader.GetField<string>(0));
-                        movie.MovieTitle = csvReader.GetField<string>(1);
-                        movie.Year = csvReader.GetField<int>(2);
-                        movie.Poster = csvReader.GetField<string>(3);
-                        movie.Rating = csvReader.GetField<double>(4);
-                        try
-                        {
-                            movie.Plot = csvReader.GetField<string>(5);
-                        }
-                        catch (Exception e)
-                        {
-                            movie.Plot = "";
-                        }
-                        moviesDictionary[csvReader.GetField<string>(0)] = movie;
-                    }
-                }
-            }
-            //get all the genres
-            using (var fs = File.OpenRead(@"db/movies.csv"))
-            using (var reader = new StreamReader(fs))
-            {
-                using (var csvReader = new LumenWorks.Framework.IO.Csv.CsvReader(reader, true))
+                using (var csvReader = new CsvReader(reader, true))
                 {
                     while (csvReader.ReadNextRecord())
                     {
-                        if (moviesDictionary.ContainsKey(csvReader[0]))
-                        {
-                            moviesDictionary[csvReader[0]].Genres = Movie.splitToGenres(csvReader[2]);
-                            moviesList.Add(moviesDictionary[csvReader[0]]);
-                        }
+                        //the first line is the headers line (movieID,Title,genres)
+                        Movie movie = new Movie(csvReader[0]);
+                        movie.MovieTitle = csvReader[1];
+                        movie.Year = Int32.Parse(csvReader[2]);
+                        movie.Poster = csvReader[3];
+                        movie.Rating = Double.Parse(csvReader[4]);
+                        movie.Plot = csvReader[5];
+                        moviesDictionary[csvReader[0]] = movie;
                     }
                 }
             }
@@ -117,20 +133,6 @@ namespace MovieRecommender.Model
             }
             string csvpath = "movies.csv";
             File.AppendAllText(csvpath, sb.ToString());
-        }
-
-        private void loadMoviesFromApi()
-        {
-            writeToCsvFile(null, true);
-            int i = 0;
-            Movie movie;
-            while (i < moviesDictionary.Count)
-            {
-                moviesToGrab.TryDequeue(out movie);
-                extractMovieDetails(movie);
-                writeToCsvFile(movie, false);
-                i++;
-            }
         }
 
         private static void extractMovieDetails(Movie movie)
@@ -170,42 +172,6 @@ namespace MovieRecommender.Model
                 movie.Poster = "";
             }
             movie.Plot = (string)json.GetValue("Plot");
-        }
-
-        private void loadDatabase()
-        {
-            //read movies.csv
-            using (var fs = File.OpenRead(@"db/movies.csv"))
-            using (var reader = new StreamReader(fs))
-            {
-                using (var csvReader = new LumenWorks.Framework.IO.Csv.CsvReader(reader, true))
-                {
-                    while (csvReader.ReadNextRecord())
-                    {
-                        //the first line is the headers line (movieID,Title,genres)
-                        Movie movie = new Movie(csvReader[0]);
-                        movie.MovieTitle = csvReader[1];
-                        movie.Genres = Movie.splitToGenres(csvReader[2]);
-                        moviesDictionary[csvReader[0]] = movie;
-                        moviesToGrab.Enqueue(movie);
-                    }
-                }
-            }
-
-            using (var fs = File.OpenRead(@"db/links.csv"))
-            using (var reader = new StreamReader(fs))
-            {
-                using (var csvReader = new LumenWorks.Framework.IO.Csv.CsvReader(reader, true))
-                {
-                    while (csvReader.ReadNextRecord())
-                    {
-                        if (moviesDictionary.ContainsKey(csvReader[0]))
-                        {
-                            moviesDictionary[csvReader[0]].UrlLink = "tt" + csvReader[1]; //add the IMDB link
-                        }
-                    }
-                }
-            }
         }
 
         private void notifyPropertyChanged(string propName)
