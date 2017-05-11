@@ -79,7 +79,7 @@ namespace MovieRecommender.View
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click2(object sender, RoutedEventArgs e)
         {
             List<Movie> suggested = vm.GetSuggested(selctedMovies);
             lv.ItemsSource = suggested;
