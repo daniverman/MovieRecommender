@@ -78,5 +78,11 @@ namespace MovieRecommender.View
                 lv.ItemsSource = vm.VM_Results;
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            List<Movie> suggested = vm.GetSuggested(selctedMovies);
+            lv.ItemsSource = suggested;
+        }
     }
 }

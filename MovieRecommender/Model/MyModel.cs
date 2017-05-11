@@ -25,7 +25,9 @@ namespace MovieRecommender.Model
         public List<string> Genres
         {
             get { return genres; }
-            set { genres = value;
+            set
+            {
+                genres = value;
                 notifyPropertyChanged("Genres");
             }
         }
@@ -54,7 +56,6 @@ namespace MovieRecommender.Model
             }
         }
 
-
         private ObservableCollection<Movie> moviesList = new ObservableCollection<Movie>();
 
         public ObservableCollection<Movie> MoviesList
@@ -65,6 +66,29 @@ namespace MovieRecommender.Model
                 moviesList = value;
                 notifyPropertyChanged("MoviesList");
             }
+        }
+
+        internal List<Movie> GetSuggested(ObservableCollection<Movie> selctedMovies)
+        {
+            Dictionary<string, Movie> selctedMoviesDictionary = new Dictionary<string, Movie>();
+            Dictionary<string, double> selctedMoviesRatingDictionary = new Dictionary<string, double>();
+
+            foreach (Movie movie in selctedMovies)
+            {
+                selctedMoviesDictionary.Add(movie.Id, movie);
+                selctedMoviesRatingDictionary.Add(movie.Id, 5);
+            }
+            User user = new User();
+            user.UserId = 999;
+            user.UserMovies = selctedMoviesRatingDictionary;
+            Recommender recommender = new Recommender(selctedMoviesDictionary);
+            List<string> recMovieList = recommender.suggestList(user);
+            List<Movie> ans = new List<Movie>();
+            for (int i = 0; i < 10; i++)
+            {
+                ans.Add(moviesDictionary[recMovieList[i]]);
+            }
+            return ans;
         }
 
         public ObservableCollection<Movie> showGenre(string genre)
@@ -113,7 +137,6 @@ namespace MovieRecommender.Model
                 notifyPropertyChanged("MoviesListSmall");
             }
         }
-
 
         private static Dictionary<string, Movie> moviesDictionary; //key = movieId, value = movie object
         private const string IMDB_BASE_URL = "http://www.imdb.com/title/tt";

@@ -47,7 +47,7 @@ namespace MovieRecommender.Model
             }
         }
 
-        private List<string> suggestList(User user)
+        public List<string> suggestList(User user)
         {
             List<string> ans = new List<string>();
             Dictionary<string, double> UserSimilarity = new Dictionary<string, double>();
