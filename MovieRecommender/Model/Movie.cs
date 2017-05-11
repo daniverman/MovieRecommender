@@ -22,9 +22,20 @@ namespace MovieRecommender.Model
             this.id = movieId;
         }
 
-        public string Id { get => id; set => id = value; }
-        public string MovieTitle { get => movieTitle; set{
-                if (!value.Contains("("))
+        
+	
+        public string Id {
+
+            get{ return id;}
+            set{ id= value;}
+        }
+
+        public string MovieTitle{
+            get{
+                return movieTitle;
+            }
+            set{
+                 if (!value.Contains("("))
                 {
                     movieTitle = value;
                     return;
@@ -56,14 +67,29 @@ namespace MovieRecommender.Model
 
         public List<string> Genres
         {
-            get => genres;
-            set => genres=value;
+            get{return genres;}
+            set { genres = value; }
         }
-        public int Year { get => year; set => year = value; }
-        public string UrlLink { get => urlLink; set => urlLink = value; }
-        public double Rating { get => rating; set => rating = value; }
-        public string Poster { get => poster; set => poster = value; }
-        public string Plot { get => plot; set => plot = value; }
+        public int Year {
+            get{ return year;}
+            set{ year = value;}
+        }
+        public string UrlLink { 
+            get{return urlLink;}
+            set{ urlLink = value;}
+        }
+        public double Rating {
+            get{return rating;}
+            set{rating = value;}
+        }
+        public string Poster {
+            get{return poster;}
+            set{poster = value;}
+        }
+        public string Plot {
+            get{return plot;}
+            set{plot = value;}
+        }
 
         public static List<string> splitToGenres(string genresLine)
         {
