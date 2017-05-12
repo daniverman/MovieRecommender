@@ -122,7 +122,9 @@ namespace MovieRecommender.Model
         public ObservableCollection<Movie> Results
         {
             get { return results; }
-            set { results = value;
+            set
+            {
+                results = value;
                 notifyPropertyChanged("Results");
             }
         }
@@ -172,7 +174,15 @@ namespace MovieRecommender.Model
             genres.Add("All");
             movieByGenreFull["All"] = smallMovieList;
             movieByGenreSmall["All"] = smallMovieList;
+            //
+            List<Movie> sortedListMovieRating = new List<Movie>();
             foreach (Movie movie in moviesList)
+            {
+                sortedListMovieRating.Add(movie);
+            }
+            sortedListMovieRating.Sort((y, x) => x.Rating.CompareTo(y.Rating));
+
+            foreach (Movie movie in sortedListMovieRating)
             {
                 foreach (string genre in movie.Genres)
                 {
@@ -185,7 +195,10 @@ namespace MovieRecommender.Model
                     movieByGenreFull[genre].Add(movie);
                     if (movieByGenreSmall[genre].Count < 200)
                     {
-                        movieByGenreSmall[genre].Add(movie);
+                        if (movie.Rating <= 10)
+                        {
+                            movieByGenreSmall[genre].Add(movie);
+                        }
                     }
                 }
             }
