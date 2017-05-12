@@ -58,7 +58,67 @@ namespace MovieRecommender.Model
                 w = PearsonCorrealation(user, neighbor);
                 UserSimilarity.Add(neighbor.UserId.ToString(), w);
             }
-            ans = topTenSim(UserSimilarity);
+
+            //new
+
+            List<User> TopTenUser = TopTenUsers(UserSimilarity);
+
+            ans = stageTwo(TopTenUser, UserSimilarity, user);
+
+            //end of new
+
+            // ans = topTenSim(UserSimilarity);
+            return ans;
+        }
+
+        private List<string> stageTwo(List<User> topTenUser, Dictionary<string, double> UserSimilarity, User user)
+        {
+            Dictionary<string, double> MovieAndRating = new Dictionary<string, double>();
+            foreach (string movieId in m_moviesDictionary.Keys)
+            {
+                double mona = 0;
+                double mecna = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    double ru = calculateR(topTenUser[i]);
+                    if (topTenUser[i].UserMovies.ContainsKey(movieId))
+                    {
+                        mona += (topTenUser[i].UserMovies[movieId] - ru) *
+                                UserSimilarity[topTenUser[i].UserId.ToString()];
+                        mecna += UserSimilarity[topTenUser[i].UserId.ToString()];
+                    }
+                    else
+                    {
+                        mona += 0;
+                    }
+                }
+
+                double Ra = calculateR(user);
+                double Pa = Ra + (mona / mecna);
+                MovieAndRating.Add(movieId, Pa);
+            }
+
+            var sortedDict = from entry in MovieAndRating orderby entry.Value descending select entry;
+            List<string> topMovie = new List<string>();
+
+            List<string> ans = new List<string>();
+            int z = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                ans.Add(sortedDict.ElementAt(i).Key);
+            }
+
+            return ans;
+        }
+
+        private List<User> TopTenUsers(Dictionary<string, double> userSimilarity)
+        {
+            List<User> ans = new List<User>();
+            var sortedDict = from entry in userSimilarity orderby entry.Value descending select entry;
+            for (int i = 0; i < 10; i++)
+            {
+                ans.Add(m_usersDict[sortedDict.ElementAt(i).Key]);
+            }
             return ans;
         }
 

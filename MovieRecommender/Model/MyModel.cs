@@ -83,7 +83,7 @@ namespace MovieRecommender.Model
             User user = new User();
             user.UserId = 999;
             user.UserMovies = selctedMoviesRatingDictionary;
-            Recommender recommender = new Recommender(selctedMoviesDictionary);
+            Recommender recommender = new Recommender(moviesDictionary);
             List<string> recMovieList = recommender.suggestList(user);
             List<Movie> ans = new List<Movie>();
             for (int i = 0; i < 10; i++)
@@ -128,7 +128,6 @@ namespace MovieRecommender.Model
                 notifyPropertyChanged("Results");
             }
         }
-
 
         private ObservableCollection<Movie> smallMovieList = new ObservableCollection<Movie>();
 
