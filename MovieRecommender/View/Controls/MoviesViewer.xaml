@@ -27,7 +27,7 @@
             <Button Click="Button_Click">Search</Button>
             <TextBox Grid.Column="1" Name="tbMovieName"></TextBox>
         </Grid>
-        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Grid.Column="1">
             <Button HorizontalAlignment="Center" Padding="5" Margin="5" Click="Button_Click2">Suggest Me A Movie!</Button>
         </StackPanel>
         <ListView MouseDoubleClick="ListView_MouseDoubleClick" Grid.Column="1" Grid.Row="2"  Name="lv" ItemsSource="{Binding VM_MoviesListSmall}">
