@@ -23,7 +23,7 @@ namespace MovieRecommender
     /// </summary>
     public partial class MainWindow : Window
     {
-        MyViewModel vm;
+        private MyViewModel vm;
 
         public MainWindow()
         {

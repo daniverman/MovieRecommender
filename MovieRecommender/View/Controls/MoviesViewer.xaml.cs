@@ -84,5 +84,10 @@ namespace MovieRecommender.View
             List<Movie> suggested = vm.GetSuggested(selctedMovies);
             lv.ItemsSource = suggested;
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            selctedMovies.Clear();
+        }
     }
 }

@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="1025" ResizeMode="NoResize">
     <Grid Name="mainGrid">
+
         <Grid Name="openingPanel">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"></RowDefinition>

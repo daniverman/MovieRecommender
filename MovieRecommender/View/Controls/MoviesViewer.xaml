@@ -27,7 +27,7 @@
             <Button Click="Button_Click">Search</Button>
             <TextBox Grid.Column="1" Name="tbMovieName"></TextBox>
         </Grid>
-        <StackPanel Grid.Row="3" Grid.Column="1">
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
             <Button HorizontalAlignment="Center" Padding="5" Margin="5" Click="Button_Click2">Suggest Me A Movie!</Button>
         </StackPanel>
         <ListView MouseDoubleClick="ListView_MouseDoubleClick" Grid.Column="1" Grid.Row="2"  Name="lv" ItemsSource="{Binding VM_MoviesListSmall}">
@@ -55,16 +55,22 @@
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <TextBlock FontWeight="Bold" HorizontalAlignment="Center" Margin="5">Search genre</TextBlock>
                 <ListView Name="lvGenres" ItemsSource="{Binding VM_Genres}" Grid.Row="1" SelectionChanged="lvGenres_SelectionChanged"></ListView>
             </Grid>
-            <StackPanel Grid.Row="1">
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                </Grid.RowDefinitions>
                 <TextBlock FontWeight="Bold" HorizontalAlignment="Center">My favourite movies</TextBlock>
-                <ListView Name="lvFav"></ListView>
-            </StackPanel>
+                <ListView Name="lvFav" Grid.Row="1"></ListView>
+                <Button HorizontalAlignment="Center" VerticalAlignment="Center"  Grid.Row="2" Click="Button_Click_1">Reset</Button>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
