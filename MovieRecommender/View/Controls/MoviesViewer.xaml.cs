@@ -81,6 +81,11 @@ namespace MovieRecommender.View
 
         private void Button_Click2(object sender, RoutedEventArgs e)
         {
+            if (lvFav.Items.Count < 5)
+            {
+                MessageBox.Show("You need to choose at least 5 movies");
+                return;
+            }
             List<Movie> suggested = vm.GetSuggested(selctedMovies);
             lv.ItemsSource = suggested;
         }
